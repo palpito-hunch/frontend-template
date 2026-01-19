@@ -57,6 +57,18 @@ Machine-readable patterns in `.kiro/validation/rules.yml` define what to check d
 - **ADRs**: `.kiro/memory/decisions/` - Why architectural choices were made
 - **Glossary**: `.kiro/memory/glossary.yml` - Domain terminology
 
+## ADR Compliance (Mandatory)
+
+**ALWAYS check ADRs before making architectural changes.** If a proposed change contradicts an existing ADR:
+
+1. **STOP** - Do not proceed with the change
+2. **NOTIFY** - Inform the user that the change conflicts with ADR-XXXX
+3. **ASK** - Request explicit approval to either:
+   - Modify the approach to comply with the ADR
+   - Update/supersede the ADR (requires justification)
+
+ADRs represent deliberate architectural decisions. Contradicting them without review undermines the decision-making process.
+
 ## Conventions
 
 - **Files:** kebab-case (`user-profile.tsx`)
