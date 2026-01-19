@@ -38,7 +38,6 @@ jobs:
             ".kiro/steering"
             ".kiro/validation"
             ".kiro/templates"
-            "CLAUDE.md"
           )
 
           for item in "${SYNC_ITEMS[@]}"; do
@@ -55,6 +54,19 @@ jobs:
               echo "Warning: $item not found in ai-rules"
             fi
           done
+
+      - name: Sync template-specific CLAUDE.md
+        run: |
+          # Copy template-specific CLAUDE file, falling back to generic
+          if [ -f "ai-rules/CLAUDE.$TEMPLATE_TYPE.md" ]; then
+            cp "ai-rules/CLAUDE.$TEMPLATE_TYPE.md" "CLAUDE.md"
+            echo "Synced: CLAUDE.$TEMPLATE_TYPE.md -> CLAUDE.md"
+          elif [ -f "ai-rules/CLAUDE.md" ]; then
+            cp "ai-rules/CLAUDE.md" "CLAUDE.md"
+            echo "Synced: CLAUDE.md (generic fallback)"
+          else
+            echo "Warning: No CLAUDE.md found in ai-rules"
+          fi
 
       - name: Apply template exclusions from manifest
         run: |
