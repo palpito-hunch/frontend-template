@@ -56,6 +56,13 @@ jobs:
           # Clean up
           rm -rf ai-rules
 
+      - name: Remove backend-specific files
+        run: |
+          # Remove Prisma standards (not needed for frontend)
+          rm -f .kiro/standards/libraries/prisma.md
+          rm -f .kiro/steering/prisma-standards.md
+          echo "Removed backend-specific files"
+
       - name: Check for changes
         id: changes
         run: |
