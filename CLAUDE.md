@@ -69,6 +69,24 @@ Machine-readable patterns in `.kiro/validation/rules.yml` define what to check d
 
 ADRs represent deliberate architectural decisions. Contradicting them without review undermines the decision-making process.
 
+## Documentation Updates (Mandatory)
+
+**ALWAYS keep documentation in sync with code changes.** After completing any task:
+
+1. **Review impacted documentation**: README, ADRs, inline comments, API docs
+2. **Update immediately**: Don't defer documentation updates to "later"
+3. **Verify accuracy**: Ensure examples, diagrams, and references are still correct
+4. **Add new docs**: Document new features, APIs, or architectural decisions
+
+Common documentation touchpoints:
+- **README.md**: Features, setup instructions, architecture diagrams
+- **ADRs** (`.kiro/memory/decisions/`): Architectural decisions and their rationale
+- **API documentation**: Endpoint changes, request/response formats
+- **Code comments**: Complex logic, non-obvious decisions
+- **CHANGELOG.md**: User-facing changes
+
+**Outdated documentation is worse than no documentation.** If you change code, update the docs in the same PR.
+
 ## Conventions
 
 - **Files:** kebab-case (`user-profile.tsx`)
