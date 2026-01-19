@@ -2,8 +2,8 @@ name: Sync Standards from AI Rules
 
 on:
   schedule:
-    # Run weekly on Mondays at 9am UTC
-    - cron: '0 9 * * 1'
+    # Run daily at 6am UTC-6 (12:00 UTC)
+    - cron: '0 12 * * *'
   workflow_dispatch:
     # Allow manual trigger
 
