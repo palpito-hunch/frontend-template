@@ -7,6 +7,9 @@ on:
   workflow_dispatch:
     # Allow manual trigger
 
+env:
+  TEMPLATE_TYPE: frontend
+
 permissions:
   contents: write
   pull-requests: write
@@ -53,15 +56,36 @@ jobs:
             fi
           done
 
-          # Clean up
-          rm -rf ai-rules
-
-      - name: Remove backend-specific files
+      - name: Apply template exclusions from manifest
         run: |
-          # Remove Prisma standards (not needed for frontend)
-          rm -f .kiro/standards/libraries/prisma.md
-          rm -f .kiro/steering/prisma-standards.md
-          echo "Removed backend-specific files"
+          MANIFEST="ai-rules/.kiro/sync-manifest.yml"
+
+          if [ ! -f "$MANIFEST" ]; then
+            echo "Warning: sync-manifest.yml not found, skipping exclusions"
+            exit 0
+          fi
+
+          echo "Applying exclusions for template type: $TEMPLATE_TYPE"
+
+          # Parse exclusions using yq (available on GitHub runners)
+          EXCLUSIONS=$(yq ".templates.$TEMPLATE_TYPE.exclude[]" "$MANIFEST" 2>/dev/null || echo "")
+
+          if [ -z "$EXCLUSIONS" ]; then
+            echo "No exclusions defined for $TEMPLATE_TYPE"
+          else
+            for exclusion in $EXCLUSIONS; do
+              target=".kiro/$exclusion"
+              if [ -e "$target" ]; then
+                rm -f "$target"
+                echo "Excluded: $target"
+              else
+                echo "Already absent: $target"
+              fi
+            done
+          fi
+
+          # Clean up ai-rules checkout
+          rm -rf ai-rules
 
       - name: Check for changes
         id: changes
@@ -85,12 +109,17 @@ jobs:
 
             This PR syncs the latest AI coding standards from the [ai-rules repository](https://github.com/palpito-hunch/ai-rules).
 
+            **Template type:** `${{ env.TEMPLATE_TYPE }}`
+
             ### What's synced:
             - `.kiro/standards/` - Coding standards
             - `.kiro/steering/` - Kiro steering files
             - `.kiro/validation/` - Validation rules
             - `.kiro/templates/` - Spec templates
             - `CLAUDE.md` - Claude entry point
+
+            ### Exclusions applied:
+            Files excluded per `sync-manifest.yml` for this template type.
 
             ### Review checklist:
             - [ ] Review changes for any breaking updates
