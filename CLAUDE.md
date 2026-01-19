@@ -23,12 +23,12 @@ Full framework: `.kiro/standards/core/priority-framework.md`
 
 ## Red Flags (Never Generate)
 
-- Prisma operations outside transactions (when multiple writes)
 - `reduce()` without initial value
 - Generic `Error` class instead of specific error types
-- N+1 query patterns
 - Missing return type annotations on public functions
 - Floating promises (unhandled async)
+- Using `any` type instead of proper TypeScript types
+- Missing key prop in React list rendering
 
 ## Key Standards
 
@@ -45,7 +45,6 @@ Full framework: `.kiro/standards/core/priority-framework.md`
 
 | Library | File                                    | When to Use            |
 | ------- | --------------------------------------- | ---------------------- |
-| Prisma  | `.kiro/standards/libraries/prisma.md`   | Database operations    |
 | Next.js | `.kiro/standards/libraries/nextjs.md`   | Next.js features       |
 | Zod     | `.kiro/standards/libraries/zod.md`      | Schema validation      |
 
@@ -60,7 +59,7 @@ Machine-readable patterns in `.kiro/validation/rules.yml` define what to check d
 
 ## Conventions
 
-- **Files:** kebab-case (`user-service.ts`)
+- **Files:** kebab-case (`user-profile.tsx`)
 - **Components:** PascalCase (`UserProfile.tsx`)
 - **Functions/Variables:** camelCase
 - **Constants:** UPPER_SNAKE_CASE
@@ -84,7 +83,7 @@ See `.kiro/steering.yml` for project-specific settings (stack, preferences).
 
 ## Key Principles
 
-1. **Default to safety** - More validations, more transactions, explicit error handling
+1. **Default to safety** - More validations, explicit error handling
 2. **Fail explicitly** - Descriptive errors with context, never silent failures
 3. **One pattern at a time** - Don't combine patterns unnecessarily
 4. **Measure before optimizing** - No premature optimization
