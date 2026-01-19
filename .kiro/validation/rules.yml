@@ -1,0 +1,174 @@
+# AI Code Generation Validation Rules
+# These rules define patterns that AI should check during and after code generation.
+# Rules complement ESLint/TypeScript by adding domain-specific checks.
+
+version: "1.0"
+
+# Critical rules - violations should block code generation
+critical:
+  - name: transaction-required
+    description: "Database writes must be in transactions"
+    pattern: "prisma\\.(create|update|delete|upsert)"
+    required_context: "\\$transaction"
+    message: "Database write operation found outside of transaction"
+    reference: "standards/libraries/prisma.md#transaction-requirements"
+    applies_to:
+      - "src/services/**/*.ts"
+      - "src/repositories/**/*.ts"
+
+  - name: no-floating-promises
+    description: "Promises must be awaited or returned"
+    pattern: "(?<!await |return |void )\\w+\\([^)]*\\)\\s*;\\s*$"
+    context_check: "async function"
+    message: "Potential floating promise - ensure it's awaited or returned"
+    reference: "standards/typescript/style.md#no-floating-promises"
+    note: "ESLint enforces this, but AI should catch it earlier"
+
+  - name: only-throw-errors
+    description: "Only throw Error subclasses"
+    forbidden_pattern: "throw\\s+['\"`]|throw\\s+\\{|throw\\s+null|throw\\s+undefined"
+    message: "Only throw Error objects or subclasses"
+    reference: "standards/typescript/style.md#only-throw-error"
+
+# High priority rules - should warn but not block
+high:
+  - name: n-plus-one-query
+    description: "Prevent N+1 query patterns"
+    pattern: "for\\s*\\([^)]+\\)\\s*\\{[^}]*await\\s+prisma\\."
+    message: "Potential N+1 query - use include or batch query"
+    reference: "standards/libraries/prisma.md#n1-query-prevention"
+    suggestion: "Use prisma.findMany with include or batch with IN clause"
+
+  - name: explicit-return-type
+    description: "Functions should have explicit return types"
+    pattern: "function\\s+\\w+\\([^)]*\\)\\s*\\{"
+    required_pattern: "function\\s+\\w+\\([^)]*\\):\\s*\\w+"
+    message: "Function missing explicit return type"
+    reference: "standards/typescript/style.md#explicit-function-return-type"
+
+  - name: use-zod-validation
+    description: "API inputs should be validated with Zod"
+    pattern: "request\\.json\\(\\)|request\\.body"
+    required_context: "Schema\\.safeParse|Schema\\.parse"
+    message: "API input should be validated with Zod schema"
+    reference: "standards/libraries/zod.md#api-request-validation"
+    applies_to:
+      - "src/pages/api/**/*.ts"
+      - "app/api/**/*.ts"
+
+  - name: error-class-usage
+    description: "Use specific error classes"
+    pattern: "throw\\s+new\\s+Error\\("
+    message: "Use specific error class instead of generic Error"
+    reference: "standards/domain/errors.md"
+    suggestion: "Use ValidationError, NotFoundError, etc."
+
+# Medium priority rules - suggestions for improvement
+medium:
+  - name: no-console-log
+    description: "Avoid console.log in production code"
+    pattern: "console\\.log\\("
+    message: "Use console.warn/error or proper logger instead"
+    reference: "standards/typescript/style.md#logging"
+    excludes:
+      - "**/*.test.ts"
+      - "**/debug/**"
+
+  - name: select-specific-fields
+    description: "Select only needed fields from database"
+    pattern: "prisma\\.\\w+\\.findMany\\(\\{[^}]*\\}\\)"
+    required_pattern: "select:|include:"
+    message: "Consider using select to fetch only needed fields"
+    reference: "standards/libraries/prisma.md#select-only-needed-fields"
+    severity: suggestion
+
+  - name: pagination-required
+    description: "List queries should be paginated"
+    pattern: "findMany\\(\\{"
+    required_pattern: "take:|cursor:"
+    message: "Consider adding pagination (take/skip or cursor)"
+    reference: "standards/libraries/prisma.md#use-pagination"
+    applies_to:
+      - "src/repositories/**/*.ts"
+
+  - name: use-path-aliases
+    description: "Use path aliases for cross-module imports"
+    pattern: "from\\s+['\"]\\.\\./"
+    count_threshold: 2
+    message: "Use @/ path alias for imports crossing module boundaries"
+    reference: "standards/typescript/architecture.md#path-aliases"
+
+# Naming conventions
+naming:
+  - name: service-naming
+    pattern: "class\\s+(\\w+)"
+    applies_to: "src/services/**/*.ts"
+    convention: "PascalCase ending with 'Service'"
+    valid_pattern: "^[A-Z][a-zA-Z]+Service$"
+
+  - name: repository-naming
+    pattern: "class\\s+(\\w+)"
+    applies_to: "src/repositories/**/*.ts"
+    convention: "PascalCase ending with 'Repository'"
+    valid_pattern: "^[A-Z][a-zA-Z]+Repository$"
+
+  - name: hook-naming
+    pattern: "export\\s+function\\s+(\\w+)"
+    applies_to: "src/hooks/**/*.ts"
+    convention: "camelCase starting with 'use'"
+    valid_pattern: "^use[A-Z][a-zA-Z]+$"
+
+  - name: component-file-naming
+    applies_to: "src/components/**/*.tsx"
+    convention: "PascalCase"
+    valid_pattern: "^[A-Z][a-zA-Z]+\\.tsx$"
+
+# File structure rules
+structure:
+  - name: service-in-services
+    description: "Services should be in services directory"
+    pattern: "class\\s+\\w+Service"
+    required_location: "src/services/"
+    message: "Service class should be in src/services/ directory"
+
+  - name: repository-in-repositories
+    description: "Repositories should be in repositories directory"
+    pattern: "class\\s+\\w+Repository"
+    required_location: "src/repositories/"
+    message: "Repository class should be in src/repositories/ directory"
+
+  - name: types-in-types
+    description: "Shared types should be in types directory"
+    pattern: "^export\\s+(type|interface)\\s+\\w+"
+    required_location: "src/types/"
+    excludes:
+      - "**/*.d.ts"
+      - "**/index.ts"
+    message: "Shared type definitions should be in src/types/ directory"
+
+# Pre-generation checks
+pre_generation:
+  - name: spec-exists
+    description: "Feature spec should exist before implementation"
+    check: "For new features, verify spec exists in .kiro/specs/features/"
+    message: "Create feature spec before implementing"
+    template: ".kiro/templates/feature-spec.md"
+
+  - name: related-tests-planned
+    description: "Test cases should be defined"
+    check: "Spec should have Acceptance Criteria section"
+    message: "Define acceptance criteria in spec before implementing"
+
+# Post-generation checks
+post_generation:
+  - name: lint-check
+    command: "npm run lint"
+    fail_on_warning: true
+
+  - name: type-check
+    command: "npx tsc --noEmit"
+    fail_on_error: true
+
+  - name: test-related
+    command: "npm test -- --findRelatedTests"
+    fail_on_error: true

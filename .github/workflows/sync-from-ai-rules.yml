@@ -1,0 +1,96 @@
+name: Sync Standards from AI Rules
+
+on:
+  schedule:
+    # Run weekly on Mondays at 9am UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+    # Allow manual trigger
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout ai-rules repository
+        uses: actions/checkout@v4
+        with:
+          repository: palpito-hunch/ai-rules
+          path: ai-rules
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync files from ai-rules
+        run: |
+          # Files and directories to sync from ai-rules
+          SYNC_ITEMS=(
+            ".kiro/standards"
+            ".kiro/steering"
+            ".kiro/validation"
+            ".kiro/templates"
+            "CLAUDE.md"
+          )
+
+          for item in "${SYNC_ITEMS[@]}"; do
+            if [ -e "ai-rules/$item" ]; then
+              # Create parent directory if needed
+              parent_dir=$(dirname "$item")
+              mkdir -p "$parent_dir"
+
+              # Remove existing and copy new
+              rm -rf "$item"
+              cp -r "ai-rules/$item" "$item"
+              echo "Synced: $item"
+            else
+              echo "Warning: $item not found in ai-rules"
+            fi
+          done
+
+          # Clean up
+          rm -rf ai-rules
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: sync standards from ai-rules'
+          title: 'chore: sync standards from ai-rules'
+          body: |
+            ## Automated Standards Sync
+
+            This PR syncs the latest AI coding standards from the [ai-rules repository](https://github.com/palpito-hunch/ai-rules).
+
+            ### What's synced:
+            - `.kiro/standards/` - Coding standards
+            - `.kiro/steering/` - Kiro steering files
+            - `.kiro/validation/` - Validation rules
+            - `.kiro/templates/` - Spec templates
+            - `CLAUDE.md` - Claude entry point
+
+            ### Review checklist:
+            - [ ] Review changes for any breaking updates
+            - [ ] Verify standards align with project needs
+            - [ ] Test that linting/validation still passes
+
+            ---
+            🤖 This PR was automatically created by the sync workflow.
+          branch: chore/sync-ai-rules
+          delete-branch: true
