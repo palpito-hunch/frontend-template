@@ -1,6 +1,6 @@
 {
   "name": "frontend-template",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "description": "Frontend template with Next.js, React, and Tailwind CSS",
   "private": true,
   "type": "module",
