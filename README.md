@@ -14,7 +14,7 @@ Next.js frontend template with React, Tailwind CSS, and TypeScript. Uses central
 
 ### Prerequisites
 
-- Node.js 22+
+- Node.js 24+
 
 ### Setup
 
@@ -71,12 +71,23 @@ src/
 
 ## AI Rules Sync
 
-This template automatically syncs AI coding standards from the ai-rules repository:
+This project automatically syncs AI coding standards from the ai-rules repository:
 
-- **Automatic**: Weekly on Mondays at 9am UTC
+- **Automatic**: Daily at 6am UTC-6
 - **Manual**: Actions → Sync Standards from AI Rules → Run workflow
 
 When updates are available, a PR is created for review.
+
+## Template Infrastructure Sync
+
+This project syncs infrastructure configuration (Node.js version, tooling) from the frontend-template:
+
+- **Automatic**: Monthly on the 1st
+- **Manual**: Actions → Sync Infrastructure from Template → Run workflow
+
+Synced items:
+- Node.js version (engines, README)
+- DevDependencies: `@types/node`, `eslint`, `typescript`, `prettier`
 
 ## Key Features
 

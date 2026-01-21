@@ -1,0 +1,130 @@
+name: Sync Infrastructure from Template
+
+on:
+  schedule:
+    # Run monthly on the 1st at 6am UTC-6 (12:00 UTC)
+    - cron: '0 12 1 * *'
+  workflow_dispatch:
+    # Allow manual trigger
+
+env:
+  TEMPLATE_REPO: palpito-hunch/frontend-template
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout template repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.TEMPLATE_REPO }}
+          path: template
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sync Node.js version and infrastructure
+        run: |
+          # Extract Node.js version requirement from template
+          TEMPLATE_NODE_VERSION=$(jq -r '.engines.node' template/package.json)
+          echo "Template Node.js version: $TEMPLATE_NODE_VERSION"
+
+          # Extract the major version number (e.g., ">=24.0.0" -> "24")
+          NODE_MAJOR=$(echo "$TEMPLATE_NODE_VERSION" | grep -oE '[0-9]+' | head -1)
+          echo "Node.js major version: $NODE_MAJOR"
+
+          # Update package.json engines
+          jq --arg version "$TEMPLATE_NODE_VERSION" '.engines.node = $version' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+          # Sync specific devDependencies from template
+          SYNC_DEPS=(
+            "@types/node"
+            "eslint"
+            "typescript"
+            "prettier"
+          )
+
+          for dep in "${SYNC_DEPS[@]}"; do
+            TEMPLATE_VERSION=$(jq -r ".devDependencies[\"$dep\"] // empty" template/package.json)
+            if [ -n "$TEMPLATE_VERSION" ]; then
+              # Check if this project has the dependency
+              LOCAL_VERSION=$(jq -r ".devDependencies[\"$dep\"] // empty" package.json)
+              if [ -n "$LOCAL_VERSION" ]; then
+                jq --arg dep "$dep" --arg ver "$TEMPLATE_VERSION" \
+                  '.devDependencies[$dep] = $ver' package.json > package.json.tmp
+                mv package.json.tmp package.json
+                echo "Updated $dep: $LOCAL_VERSION -> $TEMPLATE_VERSION"
+              fi
+            fi
+          done
+
+          # Update README Node.js references
+          if [ -f "README.md" ]; then
+            # Update "Node.js XX+" pattern
+            sed -i "s/Node\.js [0-9]*+/Node.js $NODE_MAJOR+/g" README.md
+            echo "Updated README.md Node.js references"
+          fi
+
+          # Clean up template checkout
+          rm -rf template
+
+      - name: Format package.json
+        run: |
+          # Ensure consistent formatting with 2-space indent
+          jq '.' package.json > package.json.tmp
+          mv package.json.tmp package.json
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "### Changed files:" >> $GITHUB_STEP_SUMMARY
+            git diff --staged --name-only >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore(deps): sync infrastructure from template'
+          title: 'chore(deps): sync infrastructure from template'
+          body: |
+            ## Automated Infrastructure Sync
+
+            This PR syncs infrastructure configuration from the [frontend-template](https://github.com/${{ env.TEMPLATE_REPO }}).
+
+            ### What's synced:
+            - `package.json` engines (Node.js version requirement)
+            - `package.json` devDependencies (tooling versions)
+            - `README.md` Node.js version references
+
+            ### DevDependencies synced:
+            - `@types/node`
+            - `eslint`
+            - `typescript`
+            - `prettier`
+
+            ### Review checklist:
+            - [ ] Verify Node.js version compatibility with project dependencies
+            - [ ] Run `npm install` to update lockfile
+            - [ ] Run `npm run validate` to check linting and types
+            - [ ] Run `npm test` to verify tests pass
+            - [ ] Run `npm run build` to verify build succeeds
+
+            ---
+            🤖 This PR was automatically created by the sync workflow.
+          branch: chore/sync-template-infrastructure
+          delete-branch: true
