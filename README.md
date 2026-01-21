@@ -82,7 +82,7 @@ When updates are available, a PR is created for review.
 
 This project syncs infrastructure configuration (Node.js version, tooling) from the frontend-template:
 
-- **Automatic**: Monthly on the 1st
+- **Automatic**: Weekly on Mondays
 - **Manual**: Actions → Sync Infrastructure from Template → Run workflow
 
 Synced items:
