@@ -11,7 +11,8 @@ standards/
 ├── core/                       # Always-loaded core standards
 │   ├── priority-framework.md   # Decision rules, KISS, Boy Scout Rule
 │   ├── when-not-to-apply.md    # When NOT to use patterns (SOLID, DRY, etc.)
-│   └── ai-behavior.md          # AI interaction guidelines
+│   ├── ai-behavior.md          # AI interaction guidelines
+│   └── debugging-rca.md        # Debugging and root cause analysis approach
 │
 ├── typescript/                 # TypeScript-specific standards
 │   ├── style.md                # Style rules (complements ESLint)
@@ -88,6 +89,17 @@ Guidelines for how AI assistants should interact with this codebase:
 - Communication style and code generation behavior
 
 **Use when:** Configuring AI-assisted development or understanding AI decisions.
+
+### 5. Debugging & RCA (`core/debugging-rca.md`)
+
+Structured approach for debugging and root cause analysis:
+
+- Three-phase process: Before starting, Investigation, Resolution
+- Expected artifacts: Root cause summary, fix explanation, tests, follow-ups
+- Principles: Don't guess, smallest fix first, ask before assuming
+- Checklists for each phase
+
+**Use when:** Investigating bugs, troubleshooting incidents, or diagnosing issues.
 
 ## 🔷 TypeScript Standards
 
