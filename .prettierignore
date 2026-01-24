@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+.next/
+out/
+dist/
+
+# Coverage
+coverage/
+
+# AI standards (not source code)
+.kiro/
+
+# Lock files
+package-lock.json
+pnpm-lock.yaml

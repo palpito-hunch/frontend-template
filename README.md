@@ -57,17 +57,17 @@ src/
 
 ## Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run dev` | Start development server with Turbopack |
-| `npm run build` | Build for production |
-| `npm start` | Start production server |
-| `npm run lint` | Run ESLint |
-| `npm run lint:fix` | Fix linting errors |
-| `npm run format` | Format code with Prettier |
-| `npm run type-check` | Run TypeScript type checking |
-| `npm run validate` | Run lint, format check, and type check |
-| `npm test` | Run tests |
+| Script               | Description                             |
+| -------------------- | --------------------------------------- |
+| `npm run dev`        | Start development server with Turbopack |
+| `npm run build`      | Build for production                    |
+| `npm start`          | Start production server                 |
+| `npm run lint`       | Run ESLint                              |
+| `npm run lint:fix`   | Fix linting errors                      |
+| `npm run format`     | Format code with Prettier               |
+| `npm run type-check` | Run TypeScript type checking            |
+| `npm run validate`   | Run lint, format check, and type check  |
+| `npm test`           | Run tests                               |
 
 ## AI Rules Sync
 
@@ -86,6 +86,7 @@ This project syncs infrastructure configuration (Node.js version, tooling) from 
 - **Manual**: Actions → Sync Infrastructure from Template → Run workflow
 
 Synced items:
+
 - Node.js version (engines, README)
 - DevDependencies: `@types/node`, `eslint`, `typescript`, `prettier`
 
@@ -102,6 +103,7 @@ Uses the new CSS-first configuration with automatic content detection and faster
 ### App Router
 
 Full support for:
+
 - Server Components (default)
 - Client Components (`'use client'`)
 - Server Actions

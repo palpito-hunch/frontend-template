@@ -79,7 +79,7 @@ const eslintConfig = tseslint.config(
       '@typescript-eslint/explicit-function-return-type': 'off',
     },
   },
-  prettier,
+  prettier
 );
 
 export default eslintConfig;

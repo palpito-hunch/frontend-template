@@ -37,32 +37,33 @@ Full framework: `.kiro/standards/core/priority-framework.md`
 
 ## Key Standards
 
-| Category      | File                                           | When to Use                |
-| ------------- | ---------------------------------------------- | -------------------------- |
-| Quick Ref     | `.kiro/standards/quick-reference.md`           | Always                     |
-| Priorities    | `.kiro/standards/core/priority-framework.md`   | Resolving conflicts        |
-| Anti-patterns | `.kiro/standards/core/when-not-to-apply.md`    | Before adding abstractions |
-| Debugging     | `.kiro/standards/core/debugging-rca.md`        | Investigating issues       |
-| TypeScript    | `.kiro/standards/typescript/style.md`          | Writing TypeScript         |
-| Errors        | `.kiro/standards/domain/errors.md`             | Error handling             |
-| Testing       | `.kiro/standards/domain/testing-mocks.md`      | Writing tests              |
+| Category      | File                                         | When to Use                |
+| ------------- | -------------------------------------------- | -------------------------- |
+| Quick Ref     | `.kiro/standards/quick-reference.md`         | Always                     |
+| Priorities    | `.kiro/standards/core/priority-framework.md` | Resolving conflicts        |
+| Anti-patterns | `.kiro/standards/core/when-not-to-apply.md`  | Before adding abstractions |
+| Debugging     | `.kiro/standards/core/debugging-rca.md`      | Investigating issues       |
+| TypeScript    | `.kiro/standards/typescript/style.md`        | Writing TypeScript         |
+| Errors        | `.kiro/standards/domain/errors.md`           | Error handling             |
+| Testing       | `.kiro/standards/domain/testing-mocks.md`    | Writing tests              |
 
 ## Library Standards
 
-| Library | File                                    | When to Use            |
-| ------- | --------------------------------------- | ---------------------- |
-| Next.js | `.kiro/standards/libraries/nextjs.md`   | Next.js features       |
-| Zod     | `.kiro/standards/libraries/zod.md`      | Schema validation      |
+| Library | File                                  | When to Use       |
+| ------- | ------------------------------------- | ----------------- |
+| Next.js | `.kiro/standards/libraries/nextjs.md` | Next.js features  |
+| Zod     | `.kiro/standards/libraries/zod.md`    | Schema validation |
 
 ## Security Standards (P0 Priority)
 
-| Standard | File                                           | When to Use                    |
-| -------- | ---------------------------------------------- | ------------------------------ |
-| OWASP    | `.kiro/standards/security/owasp.md`            | Security vulnerability checks  |
-| Frontend | `.kiro/standards/security/frontend-security.md`| XSS, CSP, secure storage       |
-| Input    | `.kiro/standards/security/input-validation.md` | Validating/sanitizing input    |
+| Standard | File                                            | When to Use                   |
+| -------- | ----------------------------------------------- | ----------------------------- |
+| OWASP    | `.kiro/standards/security/owasp.md`             | Security vulnerability checks |
+| Frontend | `.kiro/standards/security/frontend-security.md` | XSS, CSP, secure storage      |
+| Input    | `.kiro/standards/security/input-validation.md`  | Validating/sanitizing input   |
 
 ### Security Checklist (Every Component)
+
 - [ ] No `dangerouslySetInnerHTML` without sanitization
 - [ ] External links have `rel="noopener noreferrer"`
 - [ ] User URLs validated before use in `href`
@@ -101,6 +102,7 @@ ADRs represent deliberate architectural decisions. Contradicting them without re
 4. **Add new docs**: Document new features, APIs, or architectural decisions
 
 Common documentation touchpoints:
+
 - **README.md**: Features, setup instructions, architecture diagrams
 - **ADRs** (`.kiro/memory/decisions/`): Architectural decisions and their rationale
 - **API documentation**: Endpoint changes, request/response formats
@@ -155,6 +157,7 @@ git clone org/frontend-template new-project  # DON'T DO THIS
 This project was created from: `palpito-hunch/frontend-template`
 
 Benefits of `--template`:
+
 - Clean git history (starts fresh)
 - GitHub shows "generated from" attribution
 - Proper template repository relationship
