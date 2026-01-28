@@ -1,9 +1,0 @@
-name: Branch Flow
-
-on:
-  pull_request:
-    branches: [main, uat, develop]
-
-jobs:
-  check:
-    uses: palpito-hunch/.github/.github/workflows/branch-flow.yml@v1
