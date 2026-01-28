@@ -263,14 +263,14 @@ type CreateMarketDto = Omit<Market, 'id' | 'createdAt'>;
 
 ### Functions
 
-**Format:** camelCase, descriptive verbs
+**Format:** snake_case, descriptive verbs
 
 ```typescript
 // ✅ Good - Clear, descriptive
-function calculateMarketPrice(shares: number[], outcome: number): number {}
-function validateTradeAmount(amount: number): void {}
-function getUserBalance(userId: string): Promise<number> {}
-function isMarketResolved(market: Market): boolean {}
+function calculate_market_price(shares: number[], outcome: number): number {}
+function validate_trade_amount(amount: number): void {}
+function get_user_balance(user_id: string): Promise<number> {}
+function is_market_resolved(market: Market): boolean {}
 
 // ❌ Bad - Too short, unclear
 function calc(s: number[], o: number): number {}
@@ -281,19 +281,19 @@ function check(m: Market): boolean {}
 
 ### Variables
 
-**Format:** camelCase, descriptive nouns
+**Format:** snake_case, descriptive nouns
 
 ```typescript
 // ✅ Good
-const marketPrice = calculatePrice(shares, outcome);
-const totalVolume = trades.reduce((sum, t) => sum + t.amount, 0);
-const userBalance = await getUserBalance(userId);
-const isResolved = market.resolved;
+const market_price = calculate_price(shares, outcome);
+const total_volume = trades.reduce((sum, t) => sum + t.amount, 0);
+const user_balance = await get_user_balance(user_id);
+const is_resolved = market.resolved;
 
 // ❌ Bad
-const p = calculatePrice(shares, outcome);
+const p = calculate_price(shares, outcome);
 const vol = trades.reduce((sum, t) => sum + t.amount, 0);
-const bal = await getUserBalance(userId);
+const bal = await get_user_balance(user_id);
 const res = market.resolved;
 ```
 
@@ -322,14 +322,14 @@ const MIN_amount = getMinimum(); // This is fetched, use camelCase
 
 ### Boolean Variables
 
-**Format:** Use `is`, `has`, `can`, `should` prefixes
+**Format:** Use `is_`, `has_`, `can_`, `should_` prefixes
 
 ```typescript
 // ✅ Good - Clear boolean intent
-const isResolved = market.resolved;
-const hasBalance = user.balance > 0;
-const canTrade = !market.resolved && user.verified;
-const shouldNotify = user.preferences.notifications;
+const is_resolved = market.resolved;
+const has_balance = user.balance > 0;
+const can_trade = !market.resolved && user.verified;
+const should_notify = user.preferences.notifications;
 
 // ❌ Bad - Unclear boolean intent
 const resolved = market.resolved;
@@ -649,12 +649,12 @@ describe('MarketService', () => {
 
 ### Function Names
 
-- **camelCase:** `calculatePrice`, `validateAmount`, `getUserBalance`
+- **snake_case:** `calculate_price`, `validate_amount`, `get_user_balance`
 
 ### Variable Names
 
-- **camelCase:** `marketPrice`, `totalVolume`, `userBalance`
-- **Booleans:** `isResolved`, `hasBalance`, `canTrade`
+- **snake_case:** `market_price`, `total_volume`, `user_balance`
+- **Booleans:** `is_resolved`, `has_balance`, `can_trade`
 
 ### Constants
 
