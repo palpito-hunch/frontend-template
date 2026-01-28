@@ -12,7 +12,11 @@ standards/
 │   ├── priority-framework.md   # Decision rules, KISS, Boy Scout Rule
 │   ├── when-not-to-apply.md    # When NOT to use patterns (SOLID, DRY, etc.)
 │   ├── ai-behavior.md          # AI interaction guidelines
-│   └── debugging-rca.md        # Debugging and root cause analysis approach
+│   ├── debugging-rca.md        # Debugging and root cause analysis approach
+│   ├── linear-mcp-rules.md     # Linear MCP integration overview
+│   ├── linear-mcp-product-to-projects.md  # Product brief → projects (FIRST STEP)
+│   ├── linear-mcp-spec-to-project.md  # Spec files → Linear issues
+│   └── linear-mcp-task-development.md # Task development workflow (MANDATORY)
 │
 ├── typescript/                 # TypeScript-specific standards
 │   ├── style.md                # Style rules (complements ESLint)
@@ -100,6 +104,30 @@ Structured approach for debugging and root cause analysis:
 - Checklists for each phase
 
 **Use when:** Investigating bugs, troubleshooting incidents, or diagnosing issues.
+
+### 6. Product Development Workflow (`core/linear-mcp-*.md`)
+
+Rules for the product development workflow and Linear MCP integration:
+
+- **`linear-mcp-rules.md`** - Overview and quick reference for all phases
+- **`linear-mcp-product-to-projects.md`** - Product brief → Linear projects
+- **`linear-mcp-spec-to-project.md`** - Spec files → Linear issues
+- **`linear-mcp-task-development.md`** - **MANDATORY** four-phase task development workflow
+
+**Key Concept**: Problem → Product Brief → Projects → Specs → Issues → Development → Verification → PR Review.
+
+**Six phases (execute in order):**
+
+| Phase | Name | Owner |
+|-------|------|-------|
+| 0 | Product Brief Creation | PM (AI-assisted) |
+| 1 | Product → Projects | PM + AI |
+| 2 | Spec Creation / Refinement | PM + Engineering (AI-assisted) |
+| 3 | Spec → Issues | AI (after sign-off) |
+| 4 | Task Development | AI (mandatory) |
+| 5 | Feature Verification | PM + Engineering |
+
+**Use when:** Starting new product work, creating projects/issues, or developing tasks.
 
 ## 🔷 TypeScript Standards
 
