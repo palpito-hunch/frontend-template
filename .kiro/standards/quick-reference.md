@@ -721,6 +721,7 @@ Before creating PR to develop:
 - `quick-reference.md` - One-page consolidated reference (this file)
 - `priority-framework.md` - Decision rules when standards conflict
 - `when-not-to-apply.md` - When to skip patterns (SOLID, DRY, etc.)
+- `epistemic-honesty.md` - Cite sources, flag gaps, don't speculate
 - `linear-mcp-rules.md` - Linear MCP integration overview
 - `linear-mcp-product-to-projects.md` - Product brief → projects (FIRST STEP)
 - `linear-mcp-spec-to-project.md` - Spec files → issues

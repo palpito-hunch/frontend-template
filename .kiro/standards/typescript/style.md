@@ -651,16 +651,18 @@ import { UserService, type User } from './user';
 
 | Item | Convention | Example |
 |------|------------|---------|
-| Variables/functions | camelCase | `getUserById`, `isActive` |
+| Variables/functions | snake_case | `get_user_by_id`, `is_active` |
 | Classes | PascalCase | `UserService`, `HttpClient` |
 | Interfaces | PascalCase | `User`, `Repository` |
 | Types | PascalCase | `UserId`, `Status` |
 | Enums | PascalCase | `HttpStatus` |
 | Constants | SCREAMING_SNAKE | `MAX_RETRIES`, `API_URL` |
-| Private fields | camelCase with `private` | `private cache` |
-| Boolean variables | `is`/`has`/`can` prefix | `isActive`, `hasPermission` |
-| Event handlers | `handle` + Event | `handleClick`, `handleSubmit` |
-| Async functions | verb describing action | `fetchUser`, `saveOrder` |
+| Private fields | snake_case with `private` | `private cache` |
+| Boolean variables | `is_`/`has_`/`can_` prefix | `is_active`, `has_permission` |
+| Event handlers | `handle_` + event | `handle_click`, `handle_submit` |
+| Async functions | verb describing action | `fetch_user`, `save_order` |
+
+**Note on 3rd party frameworks:** Use snake_case for all custom code. When interacting with framework APIs, follow their conventions (e.g., React's `useState`, `onClick`, Express's `req.body`). This means your custom functions are snake_case, but framework callbacks and props use framework conventions.
 
 ---
 

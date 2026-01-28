@@ -42,6 +42,8 @@ Full framework: `.kiro/standards/core/priority-framework.md`
 | Quick Ref     | `.kiro/standards/quick-reference.md`           | Always                     |
 | Priorities    | `.kiro/standards/core/priority-framework.md`   | Resolving conflicts        |
 | Anti-patterns | `.kiro/standards/core/when-not-to-apply.md`    | Before adding abstractions |
+| Epistemic     | `.kiro/standards/core/epistemic-honesty.md`    | Working from specs         |
+| TDD Workflow  | `.kiro/standards/workflows/tdd-workflow.md`    | Test-driven development    |
 | Debugging     | `.kiro/standards/core/debugging-rca.md`        | Investigating issues       |
 | TypeScript    | `.kiro/standards/typescript/style.md`          | Writing TypeScript         |
 | Errors        | `.kiro/standards/domain/errors.md`             | Error handling             |
