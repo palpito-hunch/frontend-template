@@ -115,9 +115,16 @@ Common documentation touchpoints:
 
 - **Files:** kebab-case (`user-profile.tsx`)
 - **Components:** PascalCase (`UserProfile.tsx`)
-- **Functions/Variables:** camelCase
 - **Constants:** UPPER_SNAKE_CASE
 - **Commits:** Conventional commits format
+
+### Functions and Variables
+
+- **Domain layer** (services, utilities, data transformations): snake_case (`calculate_total`, `format_currency`, `parse_api_response`)
+- **Framework layer** (React components, hooks, handlers): camelCase (`useState`, `onClick`, `handleSubmit`, `useFetchData`)
+- **Boundary rule**: snake_case stops at the framework boundary
+
+**Note**: In frontend projects, most code is framework-layer. Use snake_case only for pure domain logic (business calculations, data transformations, API response parsing).
 
 Full conventions: `.kiro/conventions.yml`
 
